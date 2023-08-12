@@ -19,7 +19,7 @@
 - [ ] CPP
 - [ ] C
 
-![alt text](imags/code.jpeg)
+![alt text](images/code.jpeg)
 ---
 ### Our future plan
 - >Some of the ideas of PortSwigger Labs will also be added as code, and this is done by **analyzing the behavior of the web application**
