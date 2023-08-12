@@ -1,0 +1,202 @@
+Account Takeover
+================
+
+in case the user logedin on for example Facebok
+
+generate the server Facebook CSRF token using function 
+
+$token = md5(random_byte(100)) ;
+
+generate this token if user Facebook logedin Facebook
+
+and send this Token in content responce page user
+
+say 
+===
+generate the server this token using function md5(random_byte(20)) 
+
+store the server this token => 06c56a89949d617def52f371c357b6db
+
+and send this token in responce page in content page 
+
+in case if the real user 
+
+send this => 06c56a89949d617def52f371c357b6db token agyen to server in input hidden
+
+but in case other user or the real user in other page (phishing Attacks) 
+
+not send the token , the other page unknown the token 
+
+and off cource can't attacker or other page change your email
+
+===========================================================
+
+CSRF
+
+* No token
+	off cource CSRF but look other something 
+
+* weake Token
+	generete token range number 1 - 100 and hashing MD5 or generate MD5 hash from weake words , number , etc ...
+
+* check content type
+	remove content type headers and analysis web app
+
+* Check Referer header 
+
+* http://flex0geek.blogspot.com/2019/04/critical-ibm-bypass-csrf-protection.html
+
+* CSRF token is tied to a non-session cookie
+	in this case the Cookies or session not tied the token or the cfrfKey prameters in sending in cookie
+	the CSRF-Token tied the CsrfKey second prameters in Cookies
+
+	this csrf prameter tied the csrf (Token) , the session not tied the csrfKey and csrfKey tide csrf (Token)
+	============================
+	Cookie: csrfKey=iTQ0ymCMhhuIGzf3rEWkrxxAYCknQ9fi; session=SnkIkdavPl4fiRQOpL83GZZAcJWKZZaY
+	email=tes2t%40normal.com&csrf=5t6XOJcoGuCMOxtj1vaf7EeDh2y3vXOq	
+
+	header
+
+	POST /email/change HTTP/1.1
+	Host: vulnerable-website.com
+	Content-Type: application/x-www-form-urlencoded
+	Content-Length: 68
+	Cookie: session=pSJYSScWKpmC60LpFOAHKixuFuM4uXWF; csrfKey=rZHCnSzEp8dbI6atzagGoSYyqJqTz5dv
+
+	csrf=RhV7yQDO0xcq9gLEah2WVbmuFqyOq7tY&email=wiener@normal-user.com
+
+* CSRF token is simply duplicated in a cookie
+
+	duplicated the CSRF-Token in csrfKey prameter in Cookies
+
+	header
+
+	POST /email/change HTTP/1.1
+	Host: vulnerable-website.com
+	Content-Type: application/x-www-form-urlencoded
+	Content-Length: 68
+	Cookie: session=1DQGdzYbOJQzLP7460tfyiv3do7MjyPw; csrf=R8ov2YBfTYmzFyjit8o2hKBuoIjXXVpa
+
+	csrf=R8ov2YBfTYmzFyjit8o2hKBuoIjXXVpa&email=wiener@normal-user.com
+
+	duplicate csrfKey (prameter in Cookies) from csrf (Token)
+===============================================================
+
+CSRF tpken bypass
+
+* Removing Ani CSRF-Token
+
+* No check or not auothntication the server this user's token
+
+* Weak token
+
+* Reusable Tokens
+	save first token and send this token and validate in request and responce
+	True use (Generate new token in case send ani responce and auothntication in request)	
+
+* change request methos 
+	change request method say GET to POST and send token in Get request
+	(Confilect server and not auothintication this token )
+
+* Guessable Tokens 
+	guess solt token
+	say => add solt in yout username and convert to hash and store this as a token user 
+	add solt => (123) in username => 123username => 27d109fe0cf5b0bba4cf146c47721800 (this token)
+
+* bypass referer
+
+===================================================
+
+Validation of CSRF token depends on request method
+===================================================
+Some applications correctly validate the token when the request uses the POST method but skip the validation when the GET method is used
+
+In this situation, the attacker can switch to the GET method to bypass the validation and deliver a CSRF attack:
+
+GET /email/change?email=pwned@evil-user.net HTTP/1.1
+Host: vulnerable-website.com
+Cookie: session=2yQIDcpia41WrATfjPqvm9tOkDvkMv
+
+in state
+---------
+
+POST /email/change HTTP/1.1
+Host: vulnerable-website.com
+Cookie: session=2yQIDcpia41WrATfjPqvm9tOkDvkMv
+
+email=pwned@evil-user.net 
+
+
+========================================================
+
+
+CSRF token is not tied to the user session
+===========================================
+Some applications do not validate that the token belongs to the same session as the user who is making the request
+Instead, the application maintains a global pool of tokens that it has issued and accepts any token that appears in this pool
+
+In this situation, the attacker can log in to the application using their own account, obtain a valid token, 
+and then feed that token to the victim user in their CSRF attack
+
+=========================================================
+
+
+Common defences against CSRF
+Nowadays, successfully finding and exploiting CSRF vulnerabilities often involves bypassing anti-CSRF measures deployed by the target website, the victim's browser, or both. The most common defenses you'll encounter are as follows:
+
+CSRF tokens - A CSRF token is a unique, secret, and unpredictable value that is generated by the server-side application and shared with the client. When attempting to perform a sensitive action, such as submitting a form, the client must include the correct CSRF token in the request. This makes it very difficult for an attacker to construct a valid request on behalf of the victim.
+
+SameSite cookies - SameSite is a browser security mechanism that determines when a website's cookies are included in requests originating from other websites. As requests to perform sensitive actions typically require an authenticated session cookie, the appropriate SameSite restrictions may prevent an attacker from triggering these actions cross-site. Since 2021, Chrome enforces Lax SameSite restrictions by default. As this is the proposed standard, we expect other major browsers to adopt this behavior in future.
+
+Referer-based validation - Some applications make use of the HTTP Referer header to attempt to defend against CSRF attacks, normally by verifying that the request originated from the application's own domain. This is generally less effective than CSRF token validation.
+
+For a more detailed description of each of these defenses, as well as how they can potentially be bypassed, check out the following materials. These include interactive labs that let you practice what you've learned on realistic, deliberately vulnerable targets.
+
+
+1- CSRF tokens
+===============
+
+generate CSRF token
+
+php:
+
+$csrf_token = bin2hex(random_bytes(32));
+setcookie('csrf_token', $csrf_token);
+
+and validate this token from user saide
+
+php:
+
+if ($_COOKIE['csrf_token'] !== $_POST['csrf_token']) {
+    die('Invalid CSRF token');
+}
+
+-------------------------------------------------------------
+
+2- SameSite cookies
+===================
+php:
+
+setcookie('session', $session_id, [
+    'expires' => time() + 3600,
+    'path' => '/',
+    'domain' => '.example.com',
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'Lax'
+]);
+
+----------------------------------------------------------------
+3- Referer-based validation
+============================
+
+php:
+
+// vulnerable usage strpos
+if (strpos($_SERVER['HTTP_REFERER'], 'example.com') === false) {
+    die('Invalid Referer');
+}
+
+if ( $_SERVER['HTTP_REFERER'] !== 'example.com' ) {
+    die('Invalid Referer');
+}
