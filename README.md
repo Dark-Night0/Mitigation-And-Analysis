@@ -26,3 +26,27 @@
 We will **guess the shape of their code in the backend**
 This is for the ease of modification by you and **learning some of the details that are in the backend**
 ![alt text](images/portSwigger.png)
+
+---
+***
+___
+
+## Author
+
+Mohammed Khalid (0xDARK)
+<br />
+
+## Contacts
+ **Facebook** 
+* [Mohammed Khalid](https://www.facebook.com/profile.php?id=100085121092587)
+
+ **Twitter** 
+* [0xDARK3](https://twitter.com/0xDARK3)
+
+ **Linkedin** 
+* [Mohammed Khalid](https://www.linkedin.com/in/mohammed-khalid-3b43a51b3?fbclid=IwAR0LdK7KAb_etFC8qdXQBg-9ApWOfxNZHY1CwuVUe52AgpycPZcdUU9-pt0)
+
+<br>
+
+ **Medium** 
+* [0xDARK](https://medium.com/@0xDARK)
