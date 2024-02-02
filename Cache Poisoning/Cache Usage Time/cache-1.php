@@ -10,7 +10,7 @@
     
 </form>
 <?php
-echo "Success Congrats " . $_GET['name'] ;
+echo "Success Congrats " ;
 ?>
 </center>
 
