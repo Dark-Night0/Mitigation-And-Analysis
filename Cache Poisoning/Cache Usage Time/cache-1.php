@@ -1,8 +1,7 @@
 
 <form method="POST" >
 
-<label for="chk" aria-hidden="true">Done Cached in Memory And Edit File , Find XSS</label>
-<br>
+
 
     <input type="text" placeholder="Username" name="user" >
 
