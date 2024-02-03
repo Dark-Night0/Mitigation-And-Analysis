@@ -9,16 +9,14 @@ $user = $_GET['user'] ;
 if ( isset($user)){
 
     $file = $_COOKIE['file'] ;
+    $content = file_get_contents("$file") ;
     
-    $size = filesize($file) ;
+    $file = pathinfo($file)['filename'] ;
+    file_put_contents("backups/" . $file , $content) ;
+    include "backups/$file" ;
     
-    $handle = fopen("$file" , 'r') ;
-    echo fread($handle , $size)  . " "  . $user ;
-    fclose($handle) ;
     
 }
-
-
 
 ?>
 
